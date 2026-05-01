@@ -76,8 +76,7 @@ export default function MiniPayLaunchpad() {
         setAddress(addr);
         setStatus("Connected to MiniPay.");
 
-        const bal = await readContract({
-          publicClient,
+        const bal = await readContract(publicClient as any, {
           address: USDM_ADDRESS,
           abi: ERC20_ABI,
           functionName: "balanceOf",
