@@ -111,12 +111,10 @@ export default function MiniPayLaunchpad() {
         args: ["0x0000000000000000000000000000000000000000" as const, parseUnits(launchAmount, 18)],
       });
 
-      const txHash = await walletClient.sendTransaction({
+      const txHash = await (walletClient.sendTransaction as any)({
         account: address,
         to: USDM_ADDRESS,
         data,
-        kzg: undefined,
-        // @ts-ignore - Celo-specific parameter
         feeCurrency: USDM_ADDRESS,
       });
 
