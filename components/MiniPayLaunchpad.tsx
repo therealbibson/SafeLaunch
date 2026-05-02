@@ -115,6 +115,7 @@ export default function MiniPayLaunchpad() {
         account: address,
         to: USDM_ADDRESS,
         data,
+        kzg: undefined,
         // @ts-ignore - Celo-specific parameter
         feeCurrency: USDM_ADDRESS,
       });
