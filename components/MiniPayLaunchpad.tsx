@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createWalletClient, createPublicClient, custom, http, formatUnits, encodeFunctionData, parseUnits } from "viem";
-import { readContract } from "viem/actions";
 import { celo } from "viem/chains";
 
 declare global {
@@ -76,11 +75,12 @@ export default function MiniPayLaunchpad() {
         setAddress(addr);
         setStatus("Connected to MiniPay.");
 
-        const bal = await readContract(publicClient as any, {
+        const bal = await publicClient.readContract({
           address: USDM_ADDRESS,
           abi: ERC20_ABI,
           functionName: "balanceOf",
           args: [addr],
+          authorizationList: [],
         });
         setBalance(formatUnits(bal, 18));
       } catch (exc) {
