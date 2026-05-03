@@ -42,6 +42,7 @@ export default function MiniPayLaunchpad() {
   const [launchAmount, setLaunchAmount] = useState("");
   const [status, setStatus] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
   const publicClient = useMemo(
     () =>
       createPublicClient({
@@ -52,6 +53,7 @@ export default function MiniPayLaunchpad() {
   );
 
   useEffect(() => {
+    setMounted(true);
     async function connect() {
       if (typeof window === "undefined" || !window.ethereum) {
         setStatus("No Ethereum provider found.");
@@ -137,12 +139,12 @@ export default function MiniPayLaunchpad() {
           </div>
           <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
             <p className="text-sm text-slate-500">Current status</p>
-            <p className="mt-2 text-lg font-medium text-slate-900">{status || "Waiting for MiniPay..."}</p>
+            <p className="mt-2 text-lg font-medium text-slate-900">{status || (mounted ? "Waiting for MiniPay..." : "Loading...")}</p>
           </div>
         </div>
       </div>
 
-      {!isMiniPay && (
+      {!isMiniPay && mounted && (
         <div className="rounded-3xl border border-rose-200 bg-rose-50 p-5 text-rose-900">
           <p className="font-semibold">MiniPay required</p>
           <p className="mt-1 text-sm text-rose-900/80">Open this page in MiniPay to use the full launchpad experience.</p>
@@ -182,7 +184,7 @@ export default function MiniPayLaunchpad() {
 
             <button
               onClick={handleLaunch}
-              disabled={!isMiniPay || !projectName || !launchAmount}
+              disabled={!mounted || !isMiniPay || !projectName || !launchAmount}
               className="inline-flex w-full justify-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               Launch Project
